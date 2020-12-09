@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sql_crud/bloc/listing_bloc/listing_bloc.dart';
+import 'package:sql_crud/bloc/random/randomscientist_bloc.dart';
 import 'package:sql_crud/bloc/scientist_bloc.dart';
 import 'package:sql_crud/screen/scientist_list_screen.dart';
 
@@ -16,7 +17,9 @@ class MyApp extends StatelessWidget {
               create: (context) => ScientistBloc(
                   scientistListBloc:
                       BlocProvider.of<ScientistListingBloc>(context))),
-          
+          BlocProvider(
+            create: (context) => RandomScientistBloc(),
+          )
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

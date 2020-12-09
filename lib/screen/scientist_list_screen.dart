@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sql_crud/bloc/listing_bloc/listing_bloc.dart';
+import 'package:sql_crud/bloc/random/randomscientist_bloc.dart';
 import 'package:sql_crud/bloc/scientist_bloc.dart';
 import 'package:sql_crud/database_helper.dart';
 import 'package:sql_crud/model.dart';
 import 'package:sql_crud/screen/add_new_sceintist.dart';
+import 'package:sql_crud/screen/show_random.dart';
 
 class ScientistListScreen extends StatefulWidget {
   @override
@@ -19,7 +21,6 @@ class _ScientistListScreenState extends State<ScientistListScreen> {
   void initState() {
     BlocProvider.of<ScientistListingBloc>(context)
         .add(ScientistListLoadEvent());
-    scientists = helper.getScientists();
     super.initState();
   }
 
@@ -30,6 +31,15 @@ class _ScientistListScreenState extends State<ScientistListScreen> {
       appBar: AppBar(
         backgroundColor: Colors.lime[700],
         title: Text('Scientists'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.swap_horiz),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ShowRandom()));
+            },
+          )
+        ],
       ),
       body: BlocBuilder<ScientistListingBloc, ScientistListingState>(
         builder: (context, state) {
@@ -123,6 +133,7 @@ class ScientistItem extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
+                const Spacer(),
                 Row(
                   children: [
                     Text(
@@ -135,7 +146,12 @@ class ScientistItem extends StatelessWidget {
                     Text(scientist.knownFor)
                   ],
                 ),
-                const Spacer()
+                const Spacer(),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text('${scientist.id}',
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                )
               ],
             ),
           )
