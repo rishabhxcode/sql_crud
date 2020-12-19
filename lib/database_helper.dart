@@ -89,9 +89,13 @@ class DatabaseHelper {
   }
 
   //GET OPERATION
-  Future<Scientist> getScientist(int id) async {
+  Future<Scientist> getScientist() async {
     final db = await database;
-    var result = await db.query(tableName, where: "id = ?", whereArgs: [id]);
+    var result = await db.query(
+      tableName,
+      orderBy: 'RANDOM()',
+      limit: 1,
+    );
     return Scientist.fromJson(result[0]);
   }
 }
