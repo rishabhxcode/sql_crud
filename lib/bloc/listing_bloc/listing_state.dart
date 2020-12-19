@@ -13,7 +13,7 @@ class ScientistListLoadedState extends ScientistListingState {
   final List<Scientist> scientists;
 
   ScientistListLoadedState({this.scientists});
-
+ 
   @override
   List<Object> get props => [scientists];
 }

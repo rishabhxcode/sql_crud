@@ -30,5 +30,8 @@ class ScientistListingBloc
         yield ScientistListLoadFailedState();
       }
     }
+    if(event is ScientistListUpdateEvent){
+       yield ScientistListLoadedState(scientists: event.scientists);
+    }
   }
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sql_crud/bloc/listing_bloc/listing_bloc.dart';
 import 'package:sql_crud/model.dart';
@@ -24,10 +23,13 @@ class ScientistBloc extends Bloc<ScientistEvent, ScientistState> {
     helper
         .initializeDatabase()
         .then((value) => {print('DATABASE INITIALIZED')});
+
     if (event is ScientistAddEvent) {
       try {
         yield ScientistAddingState();
         await helper.insertScientist(event.scientist);
+       // We can optimize it by using a local list and updating that and calling this after the updation of local list...
+      // var scientists = await helper.getScientists();
         yield ScientistAddedState();
         scientistListBloc.add(ScientistListLoadEvent());
       } catch (e) {
@@ -38,8 +40,10 @@ class ScientistBloc extends Bloc<ScientistEvent, ScientistState> {
       try {
         yield ScientistDeletingState();
         await helper.deleteScientist(event.id);
+        // We can optimize it by using a local list and updating that and calling this after the updation of local list...
+        var scientists = await helper.getScientists();
         yield ScientistDeletedState();
-        scientistListBloc.add(ScientistListLoadEvent());
+        scientistListBloc.add(ScientistListUpdateEvent(scientists));
       } catch (e) {
         yield ScientistDeleteFailedState();
       }
