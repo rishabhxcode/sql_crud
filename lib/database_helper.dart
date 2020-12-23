@@ -89,13 +89,16 @@ class DatabaseHelper {
   }
 
   //GET OPERATION
-  Future<Scientist> getScientist() async {
+  Future<List<Scientist>> getScientist() async {
     final db = await database;
-    var result = await db.query(
+    var scientists = await db.query(
       tableName,
       orderBy: 'RANDOM()',
-      limit: 1,
+      limit: 10,
     );
-    return Scientist.fromJson(result[0]);
+    print("Loaded other scientists");
+    return scientists
+        .map((scientist) => Scientist.fromJson(scientist))
+        .toList();
   }
 }

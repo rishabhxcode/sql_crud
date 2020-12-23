@@ -8,10 +8,11 @@ class ShowRandom extends StatefulWidget {
 }
 
 class _ShowRandomState extends State<ShowRandom> {
+
   @override
   void initState() {
     BlocProvider.of<RandomScientistBloc>(context)
-        .add(RandomScientistLoadEvent());
+        .add(RandomScientistsLoadEvent());
     super.initState();
   }
 
@@ -27,7 +28,7 @@ class _ShowRandomState extends State<ShowRandom> {
         elevation: 10,
         child: BlocBuilder<RandomScientistBloc, RandomScientistState>(
             builder: (context, state) {
-          if (state is RandomScientistLoadedState) {
+          if (state is RandomScientistsLoadedState) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -37,7 +38,11 @@ class _ShowRandomState extends State<ShowRandom> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(state.scientist.imageUrl))),
+                          image: NetworkImage(state
+                                      .scientist.imageUrl !=
+                                  ''
+                              ? state.scientist.imageUrl
+                              : 'https://www.curepharmaceutical.com/wp-content/uploads/2020/04/istockphoto-1147544807-612x612-1.jpg'))),
                 ),
                 Container(
                     width: 300,
@@ -61,9 +66,17 @@ class _ShowRandomState extends State<ShowRandom> {
                         )
                       ],
                     )),
+                Container(
+                    child: FlatButton(
+                  color: Colors.lime,
+                  child: Text("Next"),
+                  onPressed: () {
+                context.read<RandomScientistBloc>().add(LoadNextScientistEvent());
+                  },
+                )),
               ],
             );
-          } else if (state is RandomScientistLoadingState) {
+          } else if (state is RandomScientistsLoadingState) {
             return CircularProgressIndicator();
           }
           return Text('Something went wrong');

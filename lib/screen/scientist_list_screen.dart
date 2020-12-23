@@ -38,6 +38,13 @@ class _ScientistListScreenState extends State<ScientistListScreen> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ShowRandom()));
             },
+          ),
+          IconButton(
+            icon: Icon(Icons.library_add),
+            onPressed: () {
+              BlocProvider.of<ScientistBloc>(context)
+                            .add(ScientistBulkAddEvent());
+            },
           )
         ],
       ),

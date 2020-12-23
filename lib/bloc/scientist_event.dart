@@ -2,6 +2,8 @@ part of 'scientist_bloc.dart';
 
 abstract class ScientistEvent extends Equatable {
   const ScientistEvent();
+   @override
+  List<Object> get props => [];
 }
 
 class ScientistAddEvent extends ScientistEvent {
@@ -20,3 +22,8 @@ class ScientistDeleteEvent extends ScientistEvent {
   @override
   List<Object> get props => [id];
 }
+
+
+class ScientistBulkAddEvent extends ScientistEvent {
+}
+

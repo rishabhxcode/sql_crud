@@ -28,8 +28,8 @@ class ScientistBloc extends Bloc<ScientistEvent, ScientistState> {
       try {
         yield ScientistAddingState();
         await helper.insertScientist(event.scientist);
-       // We can optimize it by using a local list and updating that and calling this after the updation of local list...
-      // var scientists = await helper.getScientists();
+        // We can optimize it by using a local list and updating that and calling this after the updation of local list...
+        // var scientists = await helper.getScientists();
         yield ScientistAddedState();
         scientistListBloc.add(ScientistListLoadEvent());
       } catch (e) {
@@ -46,6 +46,24 @@ class ScientistBloc extends Bloc<ScientistEvent, ScientistState> {
         scientistListBloc.add(ScientistListUpdateEvent(scientists));
       } catch (e) {
         yield ScientistDeleteFailedState();
+      }
+    }
+    if (event is ScientistBulkAddEvent) {
+      if (scientistListBloc.state is ScientistListLoadedState) {
+        var scientists = await helper.getScientists();
+        if (scientists.length > 50) return;
+
+        for (int i = 0; i < 100; i++) {
+          Map<String, dynamic> detail = {
+            'name': 'test:$i',
+            'known_for': 'something:$i',
+            'image_url': ''
+          };
+          var scientist = Scientist.fromJson(detail);
+          var val = await helper.insertScientist(scientist);
+          print(val);
+        }
+        scientistListBloc.add(ScientistListLoadEvent());
       }
     }
   }
